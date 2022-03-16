@@ -9,7 +9,7 @@ import ReactPlayer from 'react-player';
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 
-const URL_API = 'https://rapepoesia.com.br/api'
+const URL_API = 'https://api.rapepoesia.com.br'
 
 const photos = [
   {
@@ -308,7 +308,7 @@ export const getStaticProps = async () => {
     method: 'GET'
   })
   const json = await camarotes.json()
-  //console.log('camarotessApi', json)
+  // console.log('camarotessApi', json)
   return {
       props: {
         camarotes: json.camarotes ? json.camarotes : [{}]
