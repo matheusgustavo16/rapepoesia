@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Modal, Row, Col, Image, Badge, Alert } from 'react-bootstrap'
 import InputMask from "react-input-mask"
-import Card from './lib/Card'
 import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -221,15 +220,6 @@ const ModalCartCamarote : React.FC <Props> = (props:any) => {
                             </Row></>}
                             {step===3 && <><Row className="px-3"><Col md={12}>
                                     <h1>Pagamento Online</h1>
-                                </Col>
-                                <Col md={12} className="m-0 p-0 pt-2 mb-4">
-                                    <Card
-                                        cvc={card.cvc}
-                                        expiry={card.expiry}
-                                        focused={card.focus}
-                                        name={card.name}
-                                        number={card.number}
-                                    />
                                 </Col>
                                 <Col md={6} className="m-0 p-2">
                                     <input
