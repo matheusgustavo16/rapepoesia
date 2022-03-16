@@ -122,7 +122,8 @@ const Home: NextPage = (props:any) => {
   }
 
 
-  return (<>
+  return (
+    <>
       <Head>
         <title>Rap É Poesia | 25/03 - Rio de Janeiro/RJ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

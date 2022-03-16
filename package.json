@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^1.24.0",
+    "@types/react-input-mask": "^3.0.1",
     "axios": "^0.26.1",
     "bootstrap": "^5.1.3",
     "embla-carousel-autoplay": "^6.2.0",
