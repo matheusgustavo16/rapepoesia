@@ -6,7 +6,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const URL_API = 'https://rapepoesia.com.br/api'
+const URL_API = 'https://api.rapepoesia.com.br'
 
 interface Props {
     show: boolean,
@@ -16,25 +16,9 @@ interface Props {
 
 const ModalCartCamarote : React.FC <Props> = (props:any) => {
 
+    const [formPayment, setFormPayment] = useState('cartao')
     const [step, setStep] = useState(1)
     const data_camarote = props.camarote
-
-    const [card, setCard] = useState({
-        cvc: '',
-        expiry: '',
-        focus: '',
-        name: '',
-        number: ''
-    })
-
-    const handleInputFocus = (e:any) => {
-        setCard({ ...card, focus: e.target.name });
-    }
-      
-    const handleInputChange = (e:any) => {
-        const { name, value } = e.target;
-        setCard({ ...card, [name]: value });
-    }
 
     const publishableKey:any = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
     const stripePromise = loadStripe(publishableKey);
@@ -100,11 +84,9 @@ const ModalCartCamarote : React.FC <Props> = (props:any) => {
     }
 
     useEffect(()=>{
-        if(step===2){
-            //
-
-        }else if(step===4){
+        if(step===4){
             // GERA E TENTA FAZER A COBRAÇA
+            if(formPayment === 'cartao')
             createCheckOutSession();
         }
     },[ step ])
@@ -124,7 +106,7 @@ const ModalCartCamarote : React.FC <Props> = (props:any) => {
     const savePreReserva = () => {
         if(reserva?.nome !== '' || reserva?.cpf !== '' || reserva?.email !== '' || reserva?.dt_nasc !== ''){
             window.localStorage.setItem('rapepoesia_rsv', JSON.stringify(reserva))
-            setStep(4)
+            setStep(3)
         }else{
             toast.error("Atenção: Preencha todos os campos corretamente!", { theme: 'colored' });
             //alert('Não deixe campos em branco!')
@@ -153,6 +135,12 @@ const ModalCartCamarote : React.FC <Props> = (props:any) => {
         }
     }
 
+    const redirectWhatsAppLink = () => {
+        const number = '555521996560330';
+        const frase = encodeURI(`Salve, quero reservar o Camarote ${data_camarote?.id} via Pix para o Rap É Poesia no dia 25/03.\r\n**Nome:** ${reserva?.name}\r\n**Email:** ${reserva?.email}\r\n**CPF:** ${reserva?.cpf}\r\n**Data de Nascimento:** ${reserva?.dt_nasc}`);
+        window.open(`https://api.whatsapp.com/send?phone=${number}&text=${frase}`, '_blank')
+    }
+
     return (<>
         {props.camarote && <Modal
             {...props}
@@ -176,7 +164,7 @@ const ModalCartCamarote : React.FC <Props> = (props:any) => {
                             {step === 1 && <><Row className="px-4"><Col md={12}>
                                     {showCancel && <Alert className="text-center m-0 mb-3 py-2" variant="danger">Reserva cancelada</Alert>}
                                     {showSuccess && <Alert className="text-center m-0 mb-3 py-2" variant="success">Reserva aprovada</Alert>}
-                                    <h3 className="m-0 p-0 mb-2">{data_camarote?.nome}</h3>
+                                    <h3 className="m-0 p-0 mb-2">{data_camarote?.nome}</h3>                                    
                                     <p className="m-0 p-0 mb-2">🧑‍🤝‍🧑 <small className="text-muted">Lotação</small><br/>{data_camarote?.qtd_pessoas} Pessoas</p>
                                     <p className="m-0 p-0 mb-2">🥂 <small className="text-muted">Consumação</small><br/>{data_camarote?.consumacao.toLocaleString('pt-br', { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}</p>
                                     <p className="m-0 p-0 mb-2">💰 <small className="text-muted">Valor de Reserva</small><br/>
@@ -202,74 +190,46 @@ const ModalCartCamarote : React.FC <Props> = (props:any) => {
                                         placeholder="Nome Completo"
                                         onChange={handleInputChangeReserva}
                                         className="form-control"
+                                        value={reserva?.name}
                                     />
-                                    <InputMask mask={"999.999.999-99"} pattern="[0-9]*" className="form-control mt-3" type="text" onChange={handleInputChangeReserva} name={'cpf'} placeholder="CPF" />
+                                    <InputMask mask={"999.999.999-99"} value={reserva?.cpf} pattern="[0-9]*" className="form-control mt-3" type="text" onChange={handleInputChangeReserva} name={'cpf'} placeholder="CPF" />
                                     <input
                                         type="email"
                                         name="email"
                                         placeholder="E-mail"
                                         onChange={handleInputChangeReserva}
                                         className="form-control mt-3"
+                                        value={reserva?.email}
                                     />
-                                    <InputMask mask={"99/99/9999"} pattern="[0-9]*" className="form-control mt-3" type="text" onChange={handleInputChangeReserva} name={'dt_nasc'} placeholder="Data de Nascimento" />
+                                    <InputMask mask={"99/99/9999"} value={reserva?.dt_nasc} pattern="[0-9]*" className="form-control mt-3" type="text" onChange={handleInputChangeReserva} name={'dt_nasc'} placeholder="Data de Nascimento" />
                                 </Col>
                                 <Col md={12} className="pt-4">
                                     <Button onClick={()=> savePreReserva() } variant="outline-success">✔️ Continuar</Button>
                                     <Button onClick={()=> setStep(1)} size="sm" variant="outline-dark" style={{ float: 'right' }}>voltar</Button>
                                 </Col>
                             </Row></>}
-                            {step===3 && <><Row className="px-3"><Col md={12}>
-                                    <h1>Pagamento Online</h1>
+                            {step===3 && <><Row className="px-3"><Col md={12} className="pb-4">
+                                    <h1>Forma de Pagamento</h1>
                                 </Col>
                                 <Col md={6} className="m-0 p-2">
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        placeholder="Nome no Cartão"
-                                        maxLength={25}
-                                        onChange={handleInputChange}
-                                        onFocus={handleInputFocus}
-                                        className="form-control mb-2"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="expiry"
-                                        maxLength={5}
-                                        placeholder="Validade"
-                                        pattern="\d\d/\d\d"
-                                        onChange={handleInputChange}
-                                        onFocus={handleInputFocus}
-                                        className="form-control"
-                                    />
+                                    <div onClick={()=> setFormPayment('cartao')} className={`btn btn-type-payment py-3 ${formPayment==='cartao'?`selected`:``}`}>
+                                        <Image src="./images/credit-card-icon.png" className="img-fluid" />
+                                        Cartão de Credito
+                                    </div>
                                 </Col>
                                 <Col md={6} className="m-0 p-2">
-                                    <input
-                                        type="tel"
-                                        name="number"
-                                        placeholder="Número do Cartão"
-                                        maxLength={16}
-                                        pattern="[\d| ]{16,22}"
-                                        onChange={handleInputChange}
-                                        onFocus={handleInputFocus}
-                                        className="form-control mb-2"
-                                    />
-                                    <input
-                                        type="text"
-                                        name="cvc"
-                                        placeholder="CVV"
-                                        maxLength={3}
-                                        pattern="\d{3,4}"
-                                        onChange={handleInputChange}
-                                        onFocus={handleInputFocus}
-                                        className="form-control"
-                                    />
+                                    <div onClick={()=> setFormPayment('pix')} className={`btn btn-type-payment py-3 ${formPayment==='pix'?`selected`:``}`}>
+                                        <Image src="./images/pix-icon.png" className="img-fluid" />
+                                        Pix
+                                    </div>
                                 </Col>
-                                <Col md={12} className="pt-2">
+                                <Col md={12} className="pt-5 mt-5">
                                     <Button onClick={()=> setStep(4)} variant="outline-success">💳 Pagar e Reservar</Button>
+                                    <Button onClick={()=> setStep(2)} size="sm" variant="outline-dark" style={{ float: 'right' }}>voltar</Button>
                                 </Col>
                             </Row></>}
-                            {step===4 && <><Row className="px-3 text-center">
-                                <Col md={12}>
+                            {step===4 && <><Row className="px-3">
+                                {formPayment === 'cartao' && <Col md={12} className="text-center">
                                     <div className="container_loader">
                                         <div className="dash uno"></div>
                                         <div className="dash dos"></div>
@@ -277,7 +237,16 @@ const ModalCartCamarote : React.FC <Props> = (props:any) => {
                                         <div className="dash cuatro"></div>
                                     </div>
                                     <p style={{ letterSpacing: '-1px', lineHeight: '25px', fontSize: '1.5em' }} className="m-0 p-0">Processando Pagamento<br/>para Reservar o Camarote...</p>
+                                </Col>}
+                                {formPayment === 'pix' && <><Col md={12} className="pb-4">
+                                    <h1>Reserva Via Pix</h1>
                                 </Col>
+                                <Col md={12}>
+                                    <div onClick={()=> redirectWhatsAppLink()} className={`btn btn-type-payment py-3`}>
+                                        <Image src="./images/whatsapp-icon.png" className="img-fluid ico_zap" />
+                                        Finalizar reserva no WhatsApp
+                                    </div>
+                                </Col></>}
                             </Row></>}
                         </Row>
                     </Col>

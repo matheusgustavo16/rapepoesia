@@ -56,6 +56,13 @@ img.mouse_scroll_down{filter: invert(1); animation: pulse 2s infinite;}
 .embla {overflow: hidden;}
 .embla__container{display: flex;}
 .embla__slide {position: relative; flex: 0 0 100%;}
+/* MODAL TYPE PAYMENT */
+.modal h1{line-height: 35px;}
+.btn.btn-type-payment{background-color: rgba(0,0,0,.1); border-radius: 10px; min-height: 75px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 22px; line-height: 20px; position: relative;}
+.btn.btn-type-payment img{max-width: 30%; right: -5%; bottom: -30%; position: absolute;}
+.btn.btn-type-payment img.ico_zap{max-width: 20%;}
+.btn.btn-type-payment:hover{background-color: #f39c12; color: #fff;}
+.btn.btn-type-payment.selected{border: 1px solid #f39c12; background-color: #fff; color: #f39c12;}
 /* HOVER DO CAMAROTE: COR LARANJA */
 #mapa{background: url(../public/images/map.png) center top no-repeat; background-size: contain; width: 626px; height: 473px; display: block; margin: 0 auto; position: relative;}
 #mapa ul{list-style: none; width: 100%; height: 100%;}
@@ -281,21 +288,18 @@ img.mouse_scroll_down{filter: invert(1); animation: pulse 2s infinite;}
   .video-embed-teto,
   .video-embed-tz{width: 100%;}
   #teto .video-embed-teto div{height: 200px!important;}
-  #tz .video-embed-tz div{height: 200px!important;}
-
-  
+  #tz .video-embed-tz div{height: 200px!important;}  
   #teto_mask{min-height: 235px!important; width: 100px!important;}
   #tz_mask{min-height: 150px!important; width: 123px!important;}
-
   #header .container .row div:nth-child(4){text-align: center!important;}
   #header .container .row div button:nth-child(1){margin-right: .25em!important;}
-
   .modal .modal-content .modal-body .row div:nth-child(1) img{max-height: 380px; width: 100%; overflow: hidden;}
   .container_loader{margin: 5em auto;}
   #poesia-acustica img.pineapple{width: 40%;}
   #poesia-acustica img.poesia{width: 100%;}
   #sobre p{padding: 0!important;}
-
   img{max-width: 90%!important;}
-
+  .btn.btn-type-payment img{max-width: 30px!important;}
+  .btn.btn-type-payment img.ico_zap{max-width: 50px!important;}
+  #modal_camarote{overflow-x: hidden!important;}
 }

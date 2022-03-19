@@ -16,13 +16,13 @@ const photos = [
     src: "./images/eventos/IMG_2491.jpg",
     width: 4,
     height: 3,
-    title: `Baile da Pesada com Djonga`
+    title: `Baile do BK`
   },
   {
     src: "./images/eventos/_PRT4926.jpg",
-    width: 2,
+    width: 1.5,
     height: 1,
-    title: `Baile da Pesada com Djonga`
+    title: `Baile do BK`
   },
   {
     src: "./images/eventos/IMG_1260.jpg",
@@ -127,6 +127,7 @@ const Home: NextPage = (props:any) => {
       <Head>
         <title>Rap É Poesia | 25/03 - Rio de Janeiro/RJ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="@dougpica" />
         <meta name="description" content="Rap é Poesia! Depois da existência do maior projeto musical nacional, Poesia Acústica, o evento Rap é poesia nasce das mesmas entranhas e tem o objetivo de trazer muito entretenimento para todos vocês. Nosso pontapé inicial é na Quadra da Vila Isabel acompanhado de grandes nomes da nova geração da cena. Vai ficar fora dessa?" />
         <link rel="icon" href="/rapepoesia.ico" />
       </Head>
@@ -204,7 +205,7 @@ const Home: NextPage = (props:any) => {
           </Row>
           <Row className="mt-5 px-lg-5 pb-5 text-center">
             <Col>
-              <div className="d-block video-embed" style={{ margin: '0 auto' }}><ReactPlayer style={{ display: 'block' }} url="http://51.222.240.217/~radiowes/rapepoesia/divulgacao-poesia-acustica.mp4" width={530} height={300} volume={volume} controls playing={isPlaying}
+              <div className="d-block video-embed" style={{ margin: '0 auto' }}><ReactPlayer style={{ display: 'block' }} url="https://www.youtube.com/watch?v=3v8GGoT0nns" width={530} height={300} volume={volume} controls playing={isPlaying}
                 onPlay={()=> setVolume(.5)}
                 config={ { file: { attributes: { controlsList: "nodownload" } } } }
               /></div>
